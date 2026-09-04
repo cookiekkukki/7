@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SECTOR 7 TERMINAL — GREYSTONE FOUNDATION</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+  :root{
+    --bg:#09090b;
+    --bg-panel:#111114;
+    --bg-panel-2:#17171b;
+    --line:#2a2a30;
+    --line-soft:#1c1c20;
+    --text:#e9e9ec;
+    --text-dim:#8b8b94;
+    --text-faint:#55555e;
+    --amber:#eab308;
+    --amber-dim:#8a6a12;
+    --red:#ef4444;
+    --blue:#3b82f6;
+    --violet:#a78bfa;
+    --rose:#f472b6;
+    --green:#4ade80;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse 900px 500px at 20% -10%, rgba(59,130,246,0.06), transparent),
+      radial-gradient(ellipse 900px 500px at 90% 10%, rgba(167,139,250,0.05), transparent),
+      var(--bg);
+    color:var(--text);
+    font-family:'Noto Sans KR', sans-serif;
+    line-height:1.6;
+    overflow-x: hidden;
+  }
+
+  .mono{font-family:'IBM Plex Mono', monospace;}
+  .display{font-family:'Oswald', sans-serif;}
+
+  a{color:inherit; text-decoration:none;}
+
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: linear-gradient(180deg, rgba(9,9,11,.55) 0%, transparent 100%);
+    backdrop-filter: none;
+    border-bottom: 1px solid transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 24px;
+    transition: background .35s ease, padding .35s ease, border-color .35s ease, box-shadow .35s ease, backdrop-filter .35s ease;
+  }
+  .navbar .nav-logo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .navbar .nav-links {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+  }
+  .navbar .nav-links a {
+    color: var(--text-dim);
+    transition: color 0.2s;
+  }
+  .navbar .nav-links a:hover {
+    color: var(--amber);
+  }
+  .navbar.scrolled {
+    background: rgba(9,9,11,.92);
+    backdrop-filter: blur(10px);
+    border-bottom-color: var(--line-soft);
+    padding: 12px 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.45);
+  }
+
+  .noise::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 3px);
+    pointer-events:none;
+  }
+
+  .particles{position:absolute; inset:0; z-index:1; pointer-events:none; overflow:hidden;}
+  .particles span{
+    position:absolute;
+    bottom:-6%;
+    left:0;
+    border-radius:50%;
+    background:radial-gradient(circle, rgba(234,179,8,.9) 0%, rgba(167,139,250,.55) 55%, transparent 75%);
+    filter:blur(.2px);
+    opacity:0;
+    animation: floatUp linear infinite;
+  }
+  @keyframes floatUp{
+    0%{ transform:translate(0,0); opacity:0; }
+    8%{ opacity:.8; }
+    88%{ opacity:.55; }
+    100%{ transform:translate(var(--drift,0px),-118vh); opacity:0; }
+  }
+
+  .hero > *:not(.particles){ position:relative; z-index:2; }
+
+  .hero .scroll-indicator{
+    position:absolute;
+    left:50%;
+    bottom:16px;
+    transform:translateX(-50%);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+    color:var(--text-faint);
+    font-size:10px;
+    letter-spacing:3px;
+    cursor:pointer;
+    transition:color .2s ease;
+  }
+  .hero .scroll-indicator:hover{ color:var(--amber); }
+  .hero .scroll-indicator .scroll-track{
+    order:2;
+    position:relative;
+    width:1px;
+    height:34px;
+    background:var(--line);
+    overflow:hidden;
+  }
+  .hero .scroll-indicator .scroll-drip{
+    position:absolute;
+    left:0; top:0;
+    width:100%;
+    height:14px;
+    background:linear-gradient(180deg, transparent, var(--amber));
+    animation:scrollDrip 1.8s ease-in-out infinite;
+  }
+  @keyframes scrollDrip{
+    0%{ transform:translateY(-100%); opacity:0; }
+    15%{ opacity:1; }
+    85%{ opacity:1; }
+    100%{ transform:translateY(240%); opacity:0; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .hero .scroll-indicator .scroll-drip{ animation:none !important; opacity:.6 !important; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .particles span, .live-dot, .accordion-content{ animation:none !important; }
+  }
+
+  .hero{
+    position:relative;
+    min-height:100vh;
+    min-height:100svh;
+    padding:112px 22px 90px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+    border-bottom:1px solid var(--line-soft);
+  }
+
+  .hero .tape {
+    position: absolute;
+    left: 50%;
+    width: 150vw;
+    background: repeating-linear-gradient(
+      45deg,
+      #000000,
+      #000000 14px,
+      #facc15 14px,
+      #facc15 28px
+    );
+    color: #ffffff;
+    text-shadow: 0 0 3px #facc15;
+    font-weight: 800;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-align: center;
+    padding: 6px 0;
+    opacity: 0.9;
+    white-space: nowrap;
+    box-shadow: 0 0 12px rgba(0,0,0,0.8);
+    pointer-events: none;
+  }
+
+  .hero .tape-container-top {
+    position: relative;
+    width: 100%;
+    height: 45px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero .tape-container-top .t-top-single {
+    transform: translateX(-50%) rotate(-6deg);
+    filter: brightness(1);
+  }
+
+  .hero .tape-container-bottom {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin-top: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .hero .tape-container-bottom .t-bottom-1 {
+    transform: translateX(-50%) rotate(-8deg);
+    filter: brightness(0.4);
+  }
+  .hero .tape-container-bottom .t-bottom-2 {
+    transform: translateX(-50%) rotate(6deg);
+    filter: brightness(1);
+  }
+
+  .eyebrow{
+    font-size:11px;
+    letter-spacing:3px; color:var(--violet); margin-bottom:12px;
+  }
+  
+  .hero h1{
+    font-family:'Oswald', sans-serif;
+    font-weight:700;
+    font-size:clamp(50px, 10vw, 105px);
+    line-height: 0.95;
+    letter-spacing:1px;
+    margin:0 0 10px;
+    color: transparent;
+    -webkit-text-stroke: 0.5px #fafafa;
+  }
+  .hero h1 span.fill {
+    color: #fafafa;
+    -webkit-text-stroke: 0px transparent;
+  }
+
+  .hero-live {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--red);
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+    margin-bottom: 8px;
+  }
+  .live-dot{width:10px;height:10px;background:var(--red);border-radius:50%;box-shadow:0 0 6px var(--red);animation:pulse 1.8s infinite ease-in-out;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+  .hero .sub{
+    color:var(--text-dim);
+    font-size:16px;
+    max-width:520px;
+    margin:14px auto 0;
+    min-height:56px;
+  }
+  .hero .sub::after{
+    content:'▌';
+    display:inline-block;
+    margin-left:2px;
+    color:var(--violet);
+    animation: blinkCursor 1s steps(1) infinite;
+  }
+  .hero .sub.typed-done::after{
+    animation:none;
+    opacity:0;
+  }
+  @keyframes blinkCursor{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+
+  [data-reveal]{opacity:0; transform:translateY(22px); transition:opacity .65s ease, transform .65s ease;}
+  [data-reveal].in{opacity:1; transform:translateY(0);}
+
+  section{padding:56px 22px; max-width:1000px; margin:0 auto;}
+  .section-head{margin-bottom:30px;}
+  .section-head .tag{font-size:11px; letter-spacing:3px; color:var(--amber); margin-bottom:8px;}
+  .section-head h2{font-family:'Oswald',sans-serif; font-size:31px; margin:0; color:#fafafa; font-weight:600;}
+  .section-head p{color:var(--text-dim); font-size:15px; margin-top:8px; max-width:640px;}
+
+  .world-flat-list {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 40px;
+  }
+  .world-item {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+    transition: padding-left .25s ease;
+  }
+  .world-item:hover {
+    padding-left: 8px;
+  }
+  .world-item:first-child {
+    border-top: 1px solid var(--line);
+  }
+  .world-item .item-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 24px;
+    color: #fff;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .world-item .item-title span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+  }
+  .world-item p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.65;
+  }
+
+  .accordion-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .accordion-item {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 0px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .accordion-item:hover {
+    border-color: #3f3f46;
+  }
+  .accordion-item summary {
+    padding: 16px 20px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+  .accordion-item summary::-webkit-details-marker { display: none; }
+  .accordion-header-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .accordion-header-title h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #fafafa;
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 0.5px;
+  }
+  .accordion-icon {
+    font-size: 13px;
+    color: var(--text-dim);
+    transition: transform 0.3s ease;
+  }
+  .accordion-item[open] .accordion-icon {
+    transform: rotate(180deg);
+    color: var(--amber);
+  }
+  .accordion-content {
+    padding: 0 20px 20px 20px;
+    border-top: 1px dashed var(--line-soft);
+    margin-top: 4px;
+    padding-top: 16px;
+    font-size: 15px;
+    color: var(--text-dim);
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .grade-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 16px;
+  }
+  .grade-item {
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--line-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .grade-item:last-child {
+    border-bottom: none;
+  }
+  .grade-item-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .grade-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 0px;
+  }
+  .grade-tag.A { color: #4ade80; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.3); }
+  .grade-tag.S { color: #facc15; background: rgba(250,204,21,0.1); border: 1px solid rgba(250,204,21,0.3); }
+  .grade-tag.X { color: #ef4444; background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); }
+
+  .floors{border-left:2px solid var(--line); margin-top:6px;}
+  .floor{padding:8px 0 8px 16px; position:relative; font-size:14px; color:var(--text-dim);}
+  .floor::before{content:"";position:absolute; left:-6px; top:14px; width:10px; height:10px; border-radius:50%; background:var(--bg); border:2px solid var(--violet);}
+  .floor b{color:var(--text); font-weight:600; display:block; margin-bottom:2px; font-family:'IBM Plex Mono',monospace; font-size:13px;}
+
+  .tabs{display:flex; gap:8px; flex-wrap:wrap; margin-bottom:28px;}
+  .tab{
+    font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:1px;
+    padding:8px 16px; border-radius:0px; border:1px solid var(--line);
+    background:var(--bg-panel); color:var(--text-dim); cursor:pointer;
+    transition:all .15s ease;
+  }
+  .tab:hover{border-color:var(--text-faint); color:var(--text);}
+  .tab.active{background:var(--text); color:#0a0a0c; border-color:var(--text);}
+
+  .roster{display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:18px;}
+  
+  .sector-card {
+    cursor: pointer;
+    background: rgba(24,24,27,0.85);
+    border: 1px solid #3f3f46;
+    border-radius: 0px;
+    padding: 16px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 16px;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .sector-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--acc, #60a5fa);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  }
+
+  .card-avatar {
+    width: 80px;
+    height: 110px;
+    border-radius: 0px;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+    background: #18181b;
+  }
+  
+  .avatar-face-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .avatar-face {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 800;
+    color: rgba(255,255,255,.92);
+    background:
+      radial-gradient(circle at 30% 18%, rgba(255,255,255,.22), transparent 55%),
+      linear-gradient(155deg, var(--acc, var(--violet)) 0%, #0e0f11 82%);
+  }
+  .avatar-face::after {
+    content:"";
+    position:absolute; inset:0;
+    background:repeating-linear-gradient(0deg, rgba(0,0,0,.1) 0 1px, transparent 1px 3px);
+    mix-blend-mode:overlay;
+  }
+  .avatar-face.card { font-size: 31px; }
+  .avatar-face.big { font-size: 62px; }
+
+  .card-main-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
+    height: 110px;
+  }
+  .card-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .card-org-tag {
+    font-size: 9px;
+    color: #a1a1aa;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 900;
+    color: #f8fafc;
+    letter-spacing: 0.5px;
+  }
+  .card-status-badge {
+    padding: 2px 8px;
+    border-radius: 0px;
+    font-size: 9px;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+  }
+  .card-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-top: 1px solid #27272a;
+    padding-top: 8px;
+    font-size: 12px;
+  }
+
+  .badge-aiden { background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); color: #c084fc; }
+  .badge-owen { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; }
+  .badge-vivian { background: rgba(244,114,182,0.15); border: 1px solid rgba(244,114,182,0.3); color: #f472b6; }
+  .badge-rachel { background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.3); color: #4ade80; }
+  .badge-travis { background: rgba(234,179,8,0.15); border: 1px solid rgba(234,179,8,0.3); color: #facc15; }
+  .badge-liru { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+  .badge-mob { background: rgba(161,161,170,0.15); border: 1px solid rgba(161,161,170,0.3); color: #a1a1aa; }
+
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .modal-overlay.active {
+    display: flex;
+    animation: modalFadeIn 0.25s ease-out;
+  }
+  @keyframes modalFadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .modal-box {
+    background: #111114;
+    border: 1px solid #3f3f46;
+    border-radius: 0px;
+    max-width: 540px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    padding: 24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+  }
+  .static-overlay{
+    position: absolute;
+    inset: 0;
+    z-index: 50;
+    pointer-events: none;
+    opacity: 0;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.09) 0px, rgba(255,255,255,.09) 1px, transparent 1px, transparent 2px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0px, rgba(255,255,255,.05) 1px, transparent 1px, transparent 3px),
+      radial-gradient(circle at 30% 20%, rgba(255,255,255,.15), transparent 40%),
+      radial-gradient(circle at 70% 80%, rgba(255,255,255,.1), transparent 35%);
+    mix-blend-mode: overlay;
+  }
+  .static-overlay.flicker{
+    animation: staticFlicker .45s steps(1,end) 1;
+  }
+  @keyframes staticFlicker{
+    0%{ opacity:.9; background-position:0 0, 0 0, 0 0, 0 0; }
+    12%{ opacity:.2; }
+    24%{ opacity:.75; background-position:-30px 10px, 15px -8px, 0 0, 0 0; }
+    36%{ opacity:.15; }
+    50%{ opacity:.6; background-position:20px -15px, -10px 12px, 0 0, 0 0; }
+    65%{ opacity:.1; }
+    80%{ opacity:.35; }
+    100%{ opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .static-overlay.flicker{ animation:none !important; opacity:0 !important; }
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line);
+    color: #fff;
+    font-size: 18px;
+    width: 32px;
+    height: 32px;
+    border-radius: 0px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+  }
+  .modal-close:hover { background: rgba(239,68,68,0.4); }
+
+  .modal-img-container {
+    width: 100%;
+    height: 220px;
+    border-radius: 0px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    border: 1px solid var(--line);
+    background: #18181b;
+  }
+  .modal-img-container .avatar-face.big { font-size: 70px; }
+  .modal-header { margin-bottom: 16px; }
+  .modal-header .org { font-size: 11px; color: var(--text-faint); letter-spacing: 2px; }
+  .modal-header .name { font-family: 'Oswald', sans-serif; font-size: 26px; color: #fff; font-weight: 700; margin: 2px 0; }
+  .modal-header .role { font-family: 'IBM Plex Mono', monospace; font-size: 14px; color: var(--modal-acc, var(--amber)); }
+
+  .modal-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 10px 14px;
+    background: #18181b;
+    border-radius: 0px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--text-faint);
+    margin-bottom: 16px;
+  }
+  .modal-stats span b { color: #fff; }
+
+  .modal-profile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+  .profile-personality-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .personality-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .personality-pill {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .personality-pill:hover {
+    border-color: var(--modal-acc, var(--amber));
+    background: rgba(255, 255, 255, 0.08);
+  }
+
+  .profile-bg-plain {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    margin-top: 4px;
+  }
+
+  .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .modal-tags span {
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 0px;
+    background: #18181b;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  footer{
+    text-align:center; padding:40px 22px 60px; color:var(--text-faint); font-size:12px;
+    border-top:1px solid var(--line-soft);
+  }
+  footer .mono{letter-spacing:1px;}
+
+  @media (max-width:640px){
+    section{padding:48px 18px;}
+    .hero{padding:96px 16px 76px;}
+    .navbar { padding: 14px 16px; }
+    .navbar.scrolled { padding: 10px 16px; }
+  }
+</style>
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <div class="nav-logo">
+      <span style="color:var(--amber);">◈</span> GREYSTONE SECTOR 7
+    </div>
+    <div class="nav-links">
+      <a href="#world">WORLD</a>
+      <a href="#roster">PERSONNEL</a>
+    </div>
+  </nav>
+
+  <div class="hero noise">
+    <div class="particles" id="particles"></div>
+    <div class="tape-container-top">
+      <div class="tape t-top-single">X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER XX DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER XX CAUTION X DANGER X</div>
+    </div>
+
+    <div class="eyebrow mono">GREYSTONE FOUNDATION · SECTOR 07</div>
+    
+    <h1>S<span class="fill">E</span>CTOR <span class="fill">7</span><br>TERMINAL</h1>
+    
+    <div class="hero-live mono">
+      <span class="live-dot"></span>
+      <span>LIVE</span>
+    </div>
+
+    <p class="sub" id="hero-sub">안개 낀 숲과 해안 평원 사이, 인간과 이형인이 공존하는 관측 구역.<br>재단의 기록 보관소를 개방합니다.</p>
+
+    <div class="tape-container-bottom">
+      <div class="tape t-bottom-1">X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER XX DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER XX CAUTION X DANGER X</div>
+      <div class="tape t-bottom-2">X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER XX DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER X CAUTION X DANGER XX CAUTION X DANGER X</div>
+    </div>
+
+    <a href="#world" class="scroll-indicator mono" aria-label="다음 섹션으로 스크롤">
+      <span class="scroll-label">SCROLL DOWN</span>
+      <span class="scroll-track"><span class="scroll-drip"></span></span>
+    </a>
+  </div>
+
+  <section id="world">
+    <div class="section-head" data-reveal>
+      <div class="tag mono">WORLD DOSSIER</div>
+      <h2>세계관</h2>
+      <p>400년 전 열린 게이트 균열 이후, 인간의 세계는 더 이상 인간만의 것이 아니게 되었습니다.</p>
+    </div>
+
+    <div class="world-flat-list" data-reveal>
+      <div class="world-item">
+        <div class="item-title">게이트 <span>[ORIGIN]</span></div>
+        <p>상공에서 예고 없이 나타났다가 소리 소문 없이 사라지는 이세계 연결 통로입니다. 400년 전 최초로 열린 이래, 지금도 불규칙하게 재현되고 있습니다.</p>
+      </div>
+      <div class="world-item">
+        <div class="item-title">이형인<span>[異形人]</span></div>
+        <p>게이트를 통해 유입된 이차원 존재입니다. 수인, 뱀파이어, 드래곤 등 다종족으로 구성되며 인간과 동등한 지능을 지니고 있습니다. 과거에는 '괴물'로 배척당했으나, 현재는 공존을 위한 '이형인 코드(Code)'가 법제화되어 사회적 통제 아래 통합이 이루어지는 추세입니다.</p>
+      </div>
+    </div>
+
+    <div class="accordion-group" data-reveal>
+
+      <details class="accordion-item" open>
+        <summary>
+          <div class="accordion-header-title">
+            <span class="mono" style="color:var(--amber); font-size:13px;">01</span>
+            <h3>그레이스톤 재단 & 이형인 관리 등급 체계</h3>
+          </div>
+          <span class="accordion-icon">▼</span>
+        </summary>
+        <div class="accordion-content">
+          <p style="margin-top:0; margin-bottom:12px; color:var(--text);">
+전 세계에 나라별 섹터를 두고 있는 거대 이형인
+             생태·의학 연구 센터입니다.<br>
+표면적으로는 이형인의 사회 적응을 지도하고 있으나 실질적으로는 <strong>재앙급(X급) 이형인을 선제적으로 포착·격리·관측·처리</strong>를 담당합니다.
+          </p>
+
+          <div style="font-weight:700; color:#fff; font-size:16px; margin-top:20px;">
+            ◈ 이형인 관리 등급 체계 (CLASSIFICATION)
+          </div>
+
+          <div class="grade-list">
+            <div class="grade-item">
+              <div class="grade-item-head">
+                <span class="grade-tag A">A급</span>
+                <span style="font-size:14px; font-weight:600; color:#fff;">사회 동화 완료 개체</span>
+              </div>
+              <p style="margin:2px 0 0; font-size:13.5px; color:var(--text-dim);">사회 동화가 완료된 개체입니다. 경미한 수준의 정기 상담만 이루어집니다.</p>
+            </div>
+
+            <div class="grade-item">
+              <div class="grade-item-head">
+                <span class="grade-tag S">S급</span>
+                <span style="font-size:14px; font-weight:600; color:#fff;">통제 및 교육 개체</span>
+              </div>
+              <p style="margin:2px 0 0; font-size:13.5px; color:var(--text-dim);">사회화 교육 및 통제가 진행 중인 개체입니다. 지정된 핸들러의 정기 감독을 받습니다.</p>
+            </div>
+
+            <div class="grade-item">
+              <div class="grade-item-head">
+                <span class="grade-tag X">X급 (재앙급)</span>
+                <span style="font-size:14px; font-weight:600; color:#fff;">관측·안정화·억제 대상</span>
+              </div>
+              <p style="margin:2px 0 0; font-size:13.5px; color:var(--text-dim);">연구 가치와 피해 규모를 가늠하는 정기 심사를 거치며, '애물단지'이자 '고가치 표본'이라는 이중적 취급을 받습니다.</p>
+            </div>
+          </div>
+        </div>
+      </details>
+
+      <details class="accordion-item">
+        <summary>
+          <div class="accordion-header-title">
+            <span class="mono" style="color:var(--violet); font-size:13px;">02</span>
+            <h3>섹터 7 집행구역</h3>
+          </div>
+          <span class="accordion-icon">▼</span>
+        </summary>
+        <div class="accordion-content">
+          <p style="margin-top:0; margin-bottom:14px; font-size:14.5px; color:var(--text);">
+                <span style="font-size:16px; font-weight:900; color:#fff;"><b>【SECTOR 7】</b></span> <br>
+            미국 동북부, 안개 낀 숲과 해안 평원 근처에 위치한 재단의 핵심 의학연구소입니다.
+          </p>
+
+          <div class="floors">
+            <div class="floor"><b>지상 1~3층</b>이형인 관리센터 · 4~7층 위장 제약 연구소 · 별관 핸들러 숙소</div>
+            <div class="floor"><b>본관 B1</b>자제실 · 직원 휴게실</div>
+            <div class="floor"><b>본관 B2</b>이형인 실험실</div>
+            <div class="floor"><b>본관 B3</b>개인 격리실</div>
+            <div class="floor"><b>본관 B4</b>처벌실</div>
+          </div>
+        </div>
+      </details>
+
+    </div>
+  </section>
+
+  <section id="roster">
+    <div class="section-head" data-reveal>
+      <div class="tag mono">PERSONNEL FILE</div>
+      <h2>등장인물</h2>
+      <p>섹터 7을 지키는 관계자들과 관리 대상 개체들. 카드를 클릭해 상세 내용을 확인하세요.</p>
+    </div>
+
+    <div class="tabs" data-reveal>
+      <div class="tab active" data-filter="all">전체</div>
+      <div class="tab" data-filter="enforcer">엔포서</div>
+      <div class="tab" data-filter="tamer">테이머</div>
+      <div class="tab" data-filter="other">그 외</div>
+    </div>
+
+    <div class="roster" id="roster-grid">
+
+      <!-- OWEN -->
+      <div class="sector-card" data-group="enforcer" onclick="openModal('owen')" style="--acc:#60a5fa">
+        <div class="card-avatar" id="card-avatar-owen">
+          <div class="avatar-face card" style="--acc:#60a5fa">오</div>
+        </div>
+        <div class="card-main-info">
+          <div class="card-top-row">
+            <div>
+              <div class="card-org-tag">GREYSTONE FOUNDATION</div>
+              <div class="card-title">SECTOR 7 ID CARD</div>
+            </div>
+            <div class="card-status-badge badge-owen">ENFORCER</div>
+          </div>
+          <div class="card-info-grid">
+            <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">오웬 브래넌</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#60a5fa;">ACTIVE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RACHEL -->
+      <div class="sector-card" data-group="enforcer" onclick="openModal('rachel')" style="--acc:#4ade80">
+        <div class="card-avatar" id="card-avatar-rachel">
+          <div class="avatar-face card" style="--acc:#4ade80">레</div>
+        </div>
+        <div class="card-main-info">
+          <div class="card-top-row">
+            <div>
+              <div class="card-org-tag">GREYSTONE FOUNDATION</div>
+              <div class="card-title">SECTOR 7 ID CARD</div>
+            </div>
+            <div class="card-status-badge badge-rachel">ENFORCER</div>
+          </div>
+          <div class="card-info-grid">
+            <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">레이첼 화이트</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#4ade80;">ACTIVE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- AIDEN -->
+      <div class="sector-card" data-group="tamer" onclick="openModal('aiden')" style="--acc:#a78bfa">
+        <div class="card-avatar" id="card-avatar-aiden">
+          <div class="avatar-face card" style="--acc:#a78bfa">에</div>
+        </div>
+        <div class="card-main-info">
+          <div class="card-top-row">
+            <div>
+              <div class="card-org-tag">GREYSTONE FOUNDATION</div>
+              <div class="card-title">SECTOR 7 ID CARD</div>
+            </div>
+            <div class="card-status-badge badge-aiden">TAMER</div>
+          </div>
+          <div class="card-info-grid">
+            <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">에이든 로웰</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#c084fc;">ACTIVE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIVIAN -->
+      <div class="sector-card" data-group="tamer" onclick="openModal('vivian')" style="--acc:#f472b6">
+        <div class="card-avatar" id="card-avatar-vivian">
+          <div class="avatar-face card" style="--acc:#f472b6">비</div>
+        </div>
+        <div class="card-main-info">
+          <div class="card-top-row">
+            <div>
+              <div class="card-org-tag">GREYSTONE FOUNDATION</div>
+              <div class="card-title">SECTOR 7 ID CARD</div>
+            </div>
+            <div class="card-status-badge badge-vivian">TAMER</div>
+          </div>
+          <div class="card-info-grid">
+            <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">비비안 로랑</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#f472b6;">ACTIVE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRAVIS -->
+      <div class="sector-card" data-group="other" onclick="openModal('travis')" style="--acc:#facc15">
+        <div class="card-avatar" id="card-avatar-travis">
+          <div class="avatar-face card" style="--acc:#facc15">타</div>
+        </div>
+        <div class="card-main-info">
+          <div class="card-top-row">
+            <div>
+              <div class="card-org-tag">BOARD OF DIRECTORS</div>
+              <div class="card-title">SECTOR 7 ID CARD</div>
+            </div>
+            <div class="card-status-badge badge-travis">AUDITOR</div>
+          </div>
+          <div class="card-info-grid">
+            <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">타일러 트래비스</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#facc15;">INSPECTING</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LI -->
+      <div class="sector-card" data-group="other" onclick="openModal('liru')" style="--acc:#ef4444">
+        <div class="card-avatar" id="card-avatar-liru">
+          <div class="avatar-face card" style="--acc:#ef4444">리</div>
+        </div>
+        <div class="card-main-info">
+          <div class="card-top-row">
+            <div>
+              <div class="card-org-tag">CONTAINMENT · SUBJECT</div>
+              <div class="card-title">SECTOR 7 ID CARD</div>
+            </div>
+            <div class="card-status-badge badge-liru">SUBJECT X</div>
+          </div>
+          <div class="card-info-grid">
+            <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">리루</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#ef4444;">RESTRICTED</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAWRENCE -->
+      <div class="sector-card" data-group="other" onclick="openModal('lawrence')" style="--acc:#a1a1aa">
+        <div class="card-avatar" id="card-avatar-lawrence">
+          <div class="avatar-face card" style="--acc:#a1a1aa">로</div>
+        </div>
+        <div class="card-main-info">
+          <div class="card-top-row">
+            <div>
+              <div class="card-org-tag">RESEARCH DIVISION</div>
+              <div class="card-title">SECTOR 7 ID CARD</div>
+            </div>
+            <div class="card-status-badge badge-mob">STAFF</div>
+          </div>
+          <div class="card-info-grid">
+            <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">로렌스 밀러</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#a1a1aa;">ACTIVE</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- JANE -->
+      <div class="sector-card" data-group="other" onclick="openModal('jane')" style="--acc:#a1a1aa">
+        <div class="card-avatar" id="card-avatar-jane">
+          <div class="avatar-face card" style="--acc:#a1a1aa">제</div>
+        </div>
+        <div class="card-main-info">
+          <div class="card-top-row">
+            <div>
+              <div class="card-org-tag">MEDICAL DIVISION</div>
+              <div class="card-title">SECTOR 7 ID CARD</div>
+            </div>
+            <div class="card-status-badge badge-mob">STAFF</div>
+          </div>
+          <div class="card-info-grid">
+            <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">제인</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#a1a1aa;">ACTIVE</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 모달 창 구조 -->
+  <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOuter(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="static-overlay" id="static-overlay"></div>
+      <div class="modal-img-container" id="modal-avatar-container">
+      </div>
+      <div class="modal-header">
+        <div class="org mono" id="modal-org">ORGANIZATION</div>
+        <div class="name" id="modal-name">NAME</div>
+        <div class="role" id="modal-role">ROLE</div>
+      </div>
+      <div class="modal-stats" id="modal-stats"></div>
+      
+      <div class="modal-profile-section">
+        <div class="profile-personality-container">
+          <div class="personality-tags" id="modal-personality-tags"></div>
+        </div>
+
+        <div class="profile-bg-plain" id="modal-bg"></div>
+      </div>
+
+      <div class="modal-tags" id="modal-tags"></div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="mono">GREYSTONE FOUNDATION SECTOR-07 · AUTHORIZED PERSONNEL ONLY</span><br>
+    비인가 접근 및 재배포 금지
+  </footer>
+
+<script>
+  const particles = document.getElementById('particles');
+  if (particles) {
+    const count = 22;
+    for (let i = 0; i < count; i++) {
+      const s = document.createElement('span');
+      const size = (2 + Math.random() * 4).toFixed(1);
+      s.style.left = Math.random() * 100 + '%';
+      s.style.width = size + 'px';
+      s.style.height = size + 'px';
+      s.style.setProperty('--drift', (Math.random() * 80 - 40).toFixed(0) + 'px');
+      s.style.animationDuration = (9 + Math.random() * 9).toFixed(1) + 's';
+      s.style.animationDelay = (Math.random() * 10).toFixed(1) + 's';
+      particles.appendChild(s);
+    }
+  }
+
+  const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const heroSub = document.getElementById('hero-sub');
+  if (heroSub) {
+    const fullText = '안개 낀 숲과 해안 평원 사이, 인간과 이형인이 공존하는 관측 구역.\n재단의 기록 보관소를 개방합니다.';
+    if (prefersReducedMotion) {
+      heroSub.innerHTML = fullText.replace(/\n/g, '<br>');
+      heroSub.classList.add('typed-done');
+    } else {
+      heroSub.innerHTML = '';
+      let idx = 0;
+      const typeSpeed = 32;
+      (function typeStep(){
+        if (idx >= fullText.length) {
+          heroSub.classList.add('typed-done');
+          return;
+        }
+        const ch = fullText.charAt(idx);
+        heroSub.innerHTML += (ch === '\n') ? '<br>' : ch;
+        idx++;
+        setTimeout(typeStep, typeSpeed);
+      })();
+    }
+  }
+
+  const navbar = document.getElementById('navbar');
+  if (navbar) {
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 30);
+    });
+  }
+
+  const revealIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('in');
+        revealIO.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('[data-reveal]').forEach(el => revealIO.observe(el));
+
+  const tabs = document.querySelectorAll('.tab');
+  const cards = document.querySelectorAll('#roster-grid .sector-card');
+  tabs.forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const f = tab.dataset.filter;
+      cards.forEach(c=>{
+        c.style.display = (f==='all' || c.dataset.group===f) ? '' : 'none';
+      });
+    });
+  });
+
+  const characterData = {
+    aiden: {
+      img: "https://i.imgur.com/KzfYfyp.png",
+      org: "GREYSTONE · TAMER",
+      name: "에이든 로웰 (Aiden Lowell)",
+      role: "TAMER / 테이머",
+      acc: "#a78bfa",
+      stats: "<span>GENDER <b>Male</b></span> <span>AGE <b>26</b></span> <span>NAT <b>미국</b></span>",
+      personality: ["상냥함", "능청스러움", "유연한 주도권", "완벽주의", "내면의 제어욕"],
+      bg: "섹터 0 출신. 뛰어난 회유 능력과 관측 감각으로 재단 내 이사회에서 항상 눈독을 들이고 있는 인재.",
+      tags: ["낮은 체온 체질", "극진한 헌신", "둥지 역할"]
+    },
+    owen: {
+      img: "", 
+      org: "GREYSTONE · ENFORCER",
+      name: "오웬 브래넌 (Owen Brennan)",
+      role: "ENFORCER / 엔포서",
+      acc: "#60a5fa",
+      stats: "<span>GENDER <b>Male</b></span> <span>AGE <b>32</b></span> <span>NAT <b>미국</b></span>",
+      personality: ["과묵함", "직설적", "물리적 제압", "한계있는 인내심", "행동파"],
+      bg: "최전방 군 복무 시절 재앙급 이형인을 제압한 이력이 있으며, 압도적인 실력 하나로 엔포서 최정상에 오른 베테랑.",
+      tags: ["구속/제압 전문", "굳은살 박인 손", "군복무 이력"]
+    },
+    vivian: {
+      img: "", 
+      org: "GREYSTONE · TAMER",
+      name: "비비안 로랑 (Vivian Laurent)",
+      role: "TAMER / 테이머",
+      acc: "#f472b6",
+      stats: "<span>GENDER <b>Female</b></span> <span>AGE <b>22</b></span> <span>NAT <b>프랑스</b></span>",
+      personality: ["침착함", "다정함", "세심함", "위계-온정 갈등", "인간미"],
+      bg: "유복한 이형인의 손에 자라남. 테이머로서 현실적인 조언을 건네며, 상부의 압박 속에서도 인간성을 지키려 애씀.",
+      tags: ["성장형 신입", "연애 낭만", "공손한 존대", "인간미 유지"]
+    },
+    rachel: {
+      img: "", 
+      org: "GREYSTONE · ENFORCER",
+      name: "레이첼 화이트 (Rachel White)",
+      role: "ENFORCER / 엔포서",
+      acc: "#4ade80",
+      stats: "<span>GENDER <b>Female</b></span> <span>AGE <b>33</b></span> <span>NAT <b>미국</b></span>",
+      personality: ["쿨함", "털털함", "뒤끝없음", "팔안으로 굽음", "성숙한 어른"],
+      bg: "어릴 적부터 거친 현장을 겪어온 베테랑. 담배와 위스키를 즐기며, 현장 지휘와 포획에 능함.",
+      tags: ["이형인 샷건", "은근한 주도권", "깊은 스킨십"]
+    },
+    liru: {
+      img: "", 
+      org: "CONTAINMENT DIVISION · SUBJECT X",
+      name: "리루 (Li / Liru)",
+      role: "SUBJECT X / 종족미상 이형인",
+      acc: "#ef4444",
+      stats: "<span>GENDER <b>Female</b></span> <span>AGE <b>외견 20대 초</b></span> <span>CLASS <b>재앙급 (X)</b></span>",
+      personality: ["천진난만", "순진무구", "세상물정 모름", "높은 호기심", "경계심 없음"],
+      bg: "종족 미상의 이형인. 본인은 자각하지 못하지만 강력한 환각 및 이성 마비 포자를 분비함. 말을 배운 지 얼마 되지 않음.",
+      tags: ["에로틱 이노센스", "이성마비 포자", "본능적 쾌감"]
+    },
+    travis: {
+      img: "", 
+      org: "BOARD OF DIRECTORS · AUDITOR",
+      name: "타일러 트래비스 (Titus Travis)",
+      role: "BOARD AUDITOR / 이사회 감사관",
+      acc: "#facc15",
+      stats: "<span>GENDER <b>Male</b></span> <span>AGE <b>31</b></span> <span>ORIGIN <b>섹터 3 (전직 엔포서)</b></span>",
+      personality: ["능글맞음", "즉흥적", "임기응변", "실적중심", "승부사"],
+      bg: "미국-멕시코 국경(섹터 3)에서 밀입국 및 불법 게이트 단속을 맡던 전직 엔포서. 현재는 이사회 소속 감사관으로 활동 중.",
+      tags: ["말빨+완력 겸비", "오웬과 대등", "더티토크/유혹", "깔끔한 애프터케어"]
+    },
+    lawrence: {
+      img: "", 
+      org: "RESEARCH DIVISION",
+      name: "로렌스 밀러 (Lawrence Miller)",
+      role: "CHIEF RESEARCHER / 수석 연구원",
+      acc: "#a1a1aa",
+      stats: "<span>GENDER <b>Male</b></span> <span>DEPT <b>제약 연구소</b></span> <span>STATUS <b>ACTIVE</b></span>",
+      personality: ["원칙주의", "냉철함", "이성적", "꼼꼼함"],
+      bg: "위장 제약 연구소를 이끄는 수석 연구원. 이형인 생태 분석 및 격리 물질 개발을 총괄함.",
+      tags: ["수석 연구원", "위장 제약 연구소", "원칙주의자", "이형인 데이터"]
+    },
+    jane: {
+      img: "", 
+      org: "MEDICAL DIVISION",
+      name: "제인 (Jane)",
+      role: "MEDICAL OFFICER / 보건 담당",
+      acc: "#a1a1aa",
+      stats: "<span>GENDER <b>Female</b></span> <span>DEPT <b>의무실</b></span> <span>STATUS <b>ACTIVE</b></span>",
+      personality: ["차분함", "단호함", "책임감", "침착함"],
+      bg: "섹터 7 의무실을 담당하는 보건관. 부상당한 핸들러와 엔포서들의 치료를 전담함.",
+      tags: ["의무관", "섹터 7 보건", "신속 치료", "차분한 진료"]
+    }
+  };
+
+  function initCardImages() {
+    Object.keys(characterData).forEach(id => {
+      const data = characterData[id];
+      const cardAvatar = document.getElementById(`card-avatar-${id}`);
+      if (cardAvatar) {
+        if (data.img && data.img.trim() !== "") {
+          cardAvatar.innerHTML = `<img src="${data.img}" alt="${data.name}" class="avatar-face-img">`;
+        }
+      }
+    });
+  }
+  initCardImages();
+
+  function openModal(id) {
+    const data = characterData[id];
+    if (!data) return;
+
+    const staticOverlay = document.getElementById('static-overlay');
+    if (staticOverlay) {
+      staticOverlay.classList.remove('flicker');
+      void staticOverlay.offsetWidth; // 리플로우 강제 → 애니메이션 재시작
+      staticOverlay.classList.add('flicker');
+    }
+
+    const modalAvatarContainer = document.getElementById('modal-avatar-container');
+    if (data.img && data.img.trim() !== "") {
+      modalAvatarContainer.innerHTML = `<img src="${data.img}" alt="${data.name}" class="avatar-face-img">`;
+    } else {
+      modalAvatarContainer.innerHTML = `<div class="avatar-face big" id="modal-avatar" style="--acc: ${data.acc}">${data.name.charAt(0)}</div>`;
+    }
+
+    document.querySelector('.modal-box').style.setProperty('--modal-acc', data.acc);
+    document.getElementById('modal-org').innerText = data.org;
+    document.getElementById('modal-name').innerText = data.name;
+    document.getElementById('modal-role').innerText = data.role;
+    document.getElementById('modal-stats').innerHTML = data.stats;
+
+    const personalityContainer = document.getElementById('modal-personality-tags');
+    personalityContainer.innerHTML = '';
+    data.personality.forEach(p => {
+      const pill = document.createElement('div');
+      pill.className = 'personality-pill';
+      pill.innerText = p;
+      personalityContainer.appendChild(pill);
+    });
+
+    document.getElementById('modal-bg').innerText = data.bg;
+
+    const tagsContainer = document.getElementById('modal-tags');
+    tagsContainer.innerHTML = '';
+    const limitedTags = data.tags.slice(0, 4);
+    limitedTags.forEach(t => {
+      const span = document.createElement('span');
+      span.innerText = t;
+      tagsContainer.appendChild(span);
+    });
+
+    document.getElementById('modal-overlay').classList.add('active');
+  }
+
+  function closeModal() {
+    document.getElementById('modal-overlay').classList.remove('active');
+  }
+
+  function closeModalOnOuter(e) {
+    if (e.target.id === 'modal-overlay') {
+      closeModal();
+    }
+  }
+</script>
+
+</body>
+</html>
