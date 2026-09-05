@@ -20,7 +20,7 @@
     --amber-dim:#8a6a12;
     --red:#ef4444;
     --blue:#3b82f6;
-    --violet:#a78bfa;
+    --violet:#ffc100;
     --rose:#f472b6;
     --green:#4ade80;
   }
@@ -542,12 +542,13 @@
     font-size: 12px;
   }
 
+  /* 수정된 배지 스타일 */
   .badge-aiden { background: rgba(167,139,250,0.15); border: 1px solid rgba(167,139,250,0.3); color: #c084fc; }
   .badge-owen { background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3); color: #60a5fa; }
   .badge-vivian { background: rgba(244,114,182,0.15); border: 1px solid rgba(244,114,182,0.3); color: #f472b6; }
-  .badge-rachel { background: rgba(74,222,128,0.15); border: 1px solid rgba(74,222,128,0.3); color: #4ade80; }
-  .badge-travis { background: rgba(234,179,8,0.15); border: 1px solid rgba(234,179,8,0.3); color: #facc15; }
-  .badge-liru { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+  .badge-rachel { background: rgba(106,53,73,0.25); border: 1px solid rgba(106,53,73,0.5); color: #f472b6; }
+  .badge-travis { background: rgba(239,68,68,0.15); border: 1px solid rgba(239,68,68,0.3); color: #ef4444; }
+  .badge-liru { background: rgba(93,188,255,0.15); border: 1px solid rgba(93,188,255,0.3); color: #5dbcff; }
   .badge-mob { background: rgba(161,161,170,0.15); border: 1px solid rgba(161,161,170,0.3); color: #a1a1aa; }
 
   .modal-overlay {
@@ -891,9 +892,9 @@
       </div>
 
       <!-- RACHEL -->
-      <div class="sector-card" data-group="enforcer" onclick="openModal('rachel')" style="--acc:#4ade80">
+      <div class="sector-card" data-group="enforcer" onclick="openModal('rachel')" style="--acc:#6a3549">
         <div class="card-avatar" id="card-avatar-rachel">
-          <div class="avatar-face card" style="--acc:#4ade80">레</div>
+          <div class="avatar-face card" style="--acc:#6a3549">레</div>
         </div>
         <div class="card-main-info">
           <div class="card-top-row">
@@ -905,7 +906,7 @@
           </div>
           <div class="card-info-grid">
             <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">레이첼 화이트</span></div>
-            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#4ade80;">ACTIVE</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#f472b6;">ACTIVE</span></div>
           </div>
         </div>
       </div>
@@ -951,9 +952,9 @@
       </div>
 
       <!-- TRAVIS -->
-      <div class="sector-card" data-group="other" onclick="openModal('travis')" style="--acc:#facc15">
+      <div class="sector-card" data-group="other" onclick="openModal('travis')" style="--acc:#ef4444">
         <div class="card-avatar" id="card-avatar-travis">
-          <div class="avatar-face card" style="--acc:#facc15">타</div>
+          <div class="avatar-face card" style="--acc:#ef4444">타</div>
         </div>
         <div class="card-main-info">
           <div class="card-top-row">
@@ -965,15 +966,15 @@
           </div>
           <div class="card-info-grid">
             <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">타일러 트래비스</span></div>
-            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#facc15;">INSPECTING</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#ef4444;">INSPECTING</span></div>
           </div>
         </div>
       </div>
 
       <!-- LI -->
-      <div class="sector-card" data-group="other" onclick="openModal('liru')" style="--acc:#ef4444">
+      <div class="sector-card" data-group="other" onclick="openModal('liru')" style="--acc:#5dbcff">
         <div class="card-avatar" id="card-avatar-liru">
-          <div class="avatar-face card" style="--acc:#ef4444">리</div>
+          <div class="avatar-face card" style="--acc:#5dbcff">리</div>
         </div>
         <div class="card-main-info">
           <div class="card-top-row">
@@ -985,7 +986,7 @@
           </div>
           <div class="card-info-grid">
             <div><span style="color:#71717a;font-size:9px;">NAME:</span> <span style="font-weight:bold;color:#fff;">리루</span></div>
-            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#ef4444;">RESTRICTED</span></div>
+            <div><span style="color:#71717a;font-size:9px;">STATUS:</span> <span style="font-weight:bold;color:#5dbcff;">RESTRICTED</span></div>
           </div>
         </div>
       </div>
@@ -1137,7 +1138,7 @@
 
   const characterData = {
     aiden: {
-      img: "https://i.imgur.com/KzfYfyp.png",
+      img: "https://raw.githubusercontent.com/cookiekkukki/7/refs/heads/main/P/6.webp",
       org: "GREYSTONE · TAMER",
       name: "에이든 로웰 (Aiden Lowell)",
       role: "TAMER / 테이머",
@@ -1148,7 +1149,7 @@
       tags: ["낮은 체온 체질", "극진한 헌신", "둥지 역할"]
     },
     owen: {
-      img: "", 
+      img: "https://raw.githubusercontent.com/cookiekkukki/7/refs/heads/main/P/8.webp", 
       org: "GREYSTONE · ENFORCER",
       name: "오웬 브래넌 (Owen Brennan)",
       role: "ENFORCER / 엔포서",
@@ -1159,7 +1160,7 @@
       tags: ["구속/제압 전문", "굳은살 박인 손", "군복무 이력"]
     },
     vivian: {
-      img: "", 
+      img: "https://raw.githubusercontent.com/cookiekkukki/7/refs/heads/main/P/3.webp", 
       org: "GREYSTONE · TAMER",
       name: "비비안 로랑 (Vivian Laurent)",
       role: "TAMER / 테이머",
@@ -1170,40 +1171,40 @@
       tags: ["성장형 신입", "연애 낭만", "공손한 존대", "인간미 유지"]
     },
     rachel: {
-      img: "", 
+      img: "https://raw.githubusercontent.com/cookiekkukki/7/refs/heads/main/P/1.webp", 
       org: "GREYSTONE · ENFORCER",
       name: "레이첼 화이트 (Rachel White)",
       role: "ENFORCER / 엔포서",
-      acc: "#4ade80",
+      acc: "#6a3549",
       stats: "<span>GENDER <b>Female</b></span> <span>AGE <b>33</b></span> <span>NAT <b>미국</b></span>",
       personality: ["쿨함", "털털함", "뒤끝없음", "팔안으로 굽음", "성숙한 어른"],
       bg: "어릴 적부터 거친 현장을 겪어온 베테랑. 담배와 위스키를 즐기며, 현장 지휘와 포획에 능함.",
       tags: ["이형인 샷건", "은근한 주도권", "깊은 스킨십"]
     },
     liru: {
-      img: "", 
+      img: "https://raw.githubusercontent.com/cookiekkukki/7/refs/heads/main/P/2.webp", 
       org: "CONTAINMENT DIVISION · SUBJECT X",
       name: "리루 (Li / Liru)",
       role: "SUBJECT X / 종족미상 이형인",
-      acc: "#ef4444",
+      acc: "#5dbcff",
       stats: "<span>GENDER <b>Female</b></span> <span>AGE <b>외견 20대 초</b></span> <span>CLASS <b>재앙급 (X)</b></span>",
       personality: ["천진난만", "순진무구", "세상물정 모름", "높은 호기심", "경계심 없음"],
       bg: "종족 미상의 이형인. 본인은 자각하지 못하지만 강력한 환각 및 이성 마비 포자를 분비함. 말을 배운 지 얼마 되지 않음.",
       tags: ["에로틱 이노센스", "이성마비 포자", "본능적 쾌감"]
     },
     travis: {
-      img: "", 
+      img: "https://raw.githubusercontent.com/cookiekkukki/7/refs/heads/main/P/5.webp", 
       org: "BOARD OF DIRECTORS · AUDITOR",
       name: "타일러 트래비스 (Titus Travis)",
       role: "BOARD AUDITOR / 이사회 감사관",
-      acc: "#facc15",
+      acc: "#ef4444",
       stats: "<span>GENDER <b>Male</b></span> <span>AGE <b>31</b></span> <span>ORIGIN <b>섹터 3 (전직 엔포서)</b></span>",
       personality: ["능글맞음", "즉흥적", "임기응변", "실적중심", "승부사"],
       bg: "미국-멕시코 국경(섹터 3)에서 밀입국 및 불법 게이트 단속을 맡던 전직 엔포서. 현재는 이사회 소속 감사관으로 활동 중.",
       tags: ["말빨+완력 겸비", "오웬과 대등", "더티토크/유혹", "깔끔한 애프터케어"]
     },
     lawrence: {
-      img: "", 
+      img: "https://raw.githubusercontent.com/cookiekkukki/7/refs/heads/main/P/7.webp", 
       org: "RESEARCH DIVISION",
       name: "로렌스 밀러 (Lawrence Miller)",
       role: "CHIEF RESEARCHER / 수석 연구원",
@@ -1214,7 +1215,7 @@
       tags: ["수석 연구원", "위장 제약 연구소", "원칙주의자", "이형인 데이터"]
     },
     jane: {
-      img: "", 
+      img: "https://raw.githubusercontent.com/cookiekkukki/7/refs/heads/main/P/4.webp", 
       org: "MEDICAL DIVISION",
       name: "제인 (Jane)",
       role: "MEDICAL OFFICER / 보건 담당",
@@ -1246,7 +1247,7 @@
     const staticOverlay = document.getElementById('static-overlay');
     if (staticOverlay) {
       staticOverlay.classList.remove('flicker');
-      void staticOverlay.offsetWidth; // 리플로우 강제 → 애니메이션 재시작
+      void staticOverlay.offsetWidth;
       staticOverlay.classList.add('flicker');
     }
 
